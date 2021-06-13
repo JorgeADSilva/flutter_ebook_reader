@@ -3,7 +3,7 @@ class EBook {
   final String title;
   final String coverURL;
   final int pages;
-  final int bookMark;
+  int bookMark;
   final String pdfPath;
 
   EBook(this.id, this.title, this.coverURL, this.pages, this.bookMark,

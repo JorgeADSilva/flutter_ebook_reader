@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
+import 'package:ebookreader/common/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
 import 'model/ebook.dart';
@@ -40,7 +41,13 @@ class _PDFReaderState extends State<PDFReader> {
       body: Center(
           child: _isLoading
               ? Center(child: CircularProgressIndicator())
-              : PDFViewer(document: document)),
+              : PDFViewer(
+                  document: document,
+                  onPageChanged: (value) {
+                    SharedPreferencesHolder.updateEbookBookMark(
+                        widget.bookToRead, value + 1);
+                  },
+                )),
     );
   }
 }

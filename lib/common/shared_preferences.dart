@@ -28,10 +28,19 @@ class SharedPreferencesHolder {
     await prefs.setString('booksSaved', booksJSON);
   }
 
+  static updateEbookBookMark(EBook book, int bookMark) async {
+    List<EBook> booksToSave = await getEBooks();
+    book.bookMark = bookMark;
+    booksToSave[booksToSave.indexWhere((element) => element.id == book.id)] =
+        book;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String booksJSON = jsonEncode(booksToSave);
+    await prefs.setString('booksSaved', booksJSON);
+  }
+
   static Future<List<EBook>> getEBooks() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? books = prefs.getString('booksSaved');
-    print(books);
     if (books == null) {
       return [];
     } else {
