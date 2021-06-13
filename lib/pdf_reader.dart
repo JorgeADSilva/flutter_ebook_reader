@@ -17,6 +17,7 @@ class PDFReader extends StatefulWidget {
 class _PDFReaderState extends State<PDFReader> {
   bool _isLoading = true;
   late PDFDocument document;
+  late PageController pageController;
 
   @override
   void initState() {
@@ -27,6 +28,8 @@ class _PDFReaderState extends State<PDFReader> {
   Future<void> getPDFFile() async {
     File bookFile = File(widget.bookToRead.pdfPath);
     document = await PDFDocument.fromFile(bookFile);
+    pageController =
+        PageController(initialPage: widget.bookToRead.bookMark - 1);
     setState(() {
       _isLoading = false;
     });
@@ -43,6 +46,7 @@ class _PDFReaderState extends State<PDFReader> {
               ? Center(child: CircularProgressIndicator())
               : PDFViewer(
                   document: document,
+                  controller: pageController,
                   onPageChanged: (value) {
                     SharedPreferencesHolder.updateEbookBookMark(
                         widget.bookToRead, value + 1);
