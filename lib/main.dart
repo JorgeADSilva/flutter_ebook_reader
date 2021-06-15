@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:ebookreader/common/shared_preferences.dart';
 import 'package:ebookreader/components/ebook_card.dart';
 import 'package:ebookreader/model/ebook.dart';
+import 'package:epub_viewer/epub_viewer.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -92,8 +94,22 @@ class _HomePageState extends State<HomePage> {
               TextEditingController();
           final TextEditingController _bookCoverImageLinkController =
               TextEditingController();
-          await _registerEbookDialog(
-              context, _bookTitleController, _bookCoverImageLinkController);
+          /*await _registerEbookDialog(
+              context, _bookTitleController, _bookCoverImageLinkController);*/
+          EpubViewer.setConfig(
+              themeColor: Theme.of(context).primaryColor,
+              identifier: "iosBook",
+              scrollDirection: EpubScrollDirection.ALLDIRECTIONS,
+              allowSharing: true,
+              enableTts: true,
+              nightMode: true);
+          await EpubViewer.openAsset(
+            'assets/4.epub',
+          );
+          EpubViewer.locatorStream.listen((locator) {
+            print('LOCATOR: ${EpubLocator.fromJson(jsonDecode(locator))}');
+            // convert locator from string to json and save to your database to be retrieved later
+          });
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.amber,
